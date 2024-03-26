@@ -1,14 +1,15 @@
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
-import 'package:flutter/material.dart';
+import 'package:dartz/dartz.dart';
+import 'package:ekycdemo/singleton/app_context.dart';
 
 class AWSServices {
   final userPool = CognitoUserPool(
-    'eu-west-2_yOqR4zy73',
-    '2k210jlg2jlak0sdtrmps3gb2k',
+    AppContext().getPoolId(),
+    AppContext().getClientId(),
   );
 
-  Future<CognitoUserSession?> createInitialRecord(email, password) async {
-    debugPrint('Authenticating User...');
+  Future<Either<String, CognitoUserSession?>> createInitialRecord(
+      email, password) async {
     final cognitoUser = CognitoUser(email, userPool);
     final authDetails = AuthenticationDetails(
       username: email,
@@ -17,44 +18,26 @@ class AWSServices {
 
     CognitoUserSession? session;
     try {
-      // final userAttributes = [
-      //   AttributeArg(name: 'first_name', value: 'Thanh'),
-      //   AttributeArg(name: 'last_name', value: 'Wong'),
-      // ];
-
-      // var data;
-      // try {
-      //   data = await userPool.signUp(
-      //     email,
-      //     password,
-      //     userAttributes: userAttributes,
-      //   );
-      // } catch (e) {
-      //   print(e);
-      // }
-
       session = await cognitoUser.authenticateUser(authDetails);
-      debugPrint('Login Success...');
-      return session;
+      return Right(session);
     } on CognitoUserNewPasswordRequiredException catch (e) {
-      debugPrint('CognitoUserNewPasswordRequiredException $e');
+      return Left('CognitoUserNewPasswordRequiredException $e');
     } on CognitoUserMfaRequiredException catch (e) {
-      debugPrint('CognitoUserMfaRequiredException $e');
+      return Left('CognitoUserMfaRequiredException $e');
     } on CognitoUserSelectMfaTypeException catch (e) {
-      debugPrint('CognitoUserMfaRequiredException $e');
+      return Left('CognitoUserMfaRequiredException $e');
     } on CognitoUserMfaSetupException catch (e) {
-      debugPrint('CognitoUserMfaSetupException $e');
+      return Left('CognitoUserMfaSetupException $e');
     } on CognitoUserTotpRequiredException catch (e) {
-      debugPrint('CognitoUserTotpRequiredException $e');
+      return Left('CognitoUserTotpRequiredException $e');
     } on CognitoUserCustomChallengeException catch (e) {
-      debugPrint('CognitoUserCustomChallengeException $e');
+      return Left('CognitoUserCustomChallengeException $e');
     } on CognitoUserConfirmationNecessaryException catch (e) {
-      debugPrint('CognitoUserConfirmationNecessaryException $e');
+      return Left('CognitoUserConfirmationNecessaryException $e');
     } on CognitoClientException catch (e) {
-      debugPrint('CognitoClientException $e');
+      return Left('CognitoClientException $e');
     } catch (e) {
-      print(e);
+      return Left(e.toString());
     }
-    return null;
   }
 }

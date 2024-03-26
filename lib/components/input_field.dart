@@ -8,13 +8,13 @@ class InputField extends StatelessWidget {
       this.suffix,
       required this.controller,
       required this.isPassword,
-      required this.labelTxt,
-      required this.icon});
+      required this.labelText,
+      required this.prefix});
 
   final TextEditingController controller;
   final bool isPassword;
-  final String labelTxt;
-  final IconData icon;
+  final String labelText;
+  final IconData prefix;
   final Widget? suffix;
 
   @override
@@ -32,11 +32,11 @@ class InputField extends StatelessWidget {
             color: primaryColor,
           ),
         ),
-        prefixIcon: Icon(icon, color: primaryColor),
+        prefix: Icon(prefix, color: primaryColor),
         filled: true,
         suffix: suffix,
         fillColor: primaryColor.withOpacity(0.2),
-        labelText: labelTxt,
+        labelText: labelText,
         labelStyle: TextStyle(color: primaryColor),
       ),
     );
