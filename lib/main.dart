@@ -15,7 +15,7 @@ void main() async {
     /// Handle error log here
   }
   runApp(const MaterialApp(
-    title: 'Onfido',
+    title: 'Cognito',
     home: LoginPage(),
   ));
 }
