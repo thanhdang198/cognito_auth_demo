@@ -32,7 +32,7 @@ class InputField extends StatelessWidget {
             color: primaryColor,
           ),
         ),
-        prefix: Icon(prefix, color: primaryColor),
+        prefixIcon: Icon(prefix, color: primaryColor),
         filled: true,
         suffix: suffix,
         fillColor: primaryColor.withOpacity(0.2),

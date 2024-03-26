@@ -113,6 +113,8 @@ class _LoginPageState extends State<LoginPage> {
 
   void login(String email, String password) async {
     unfocus();
+    updateLoadingStatus(true);
+
     var res = await AWSServices().createInitialRecord(email, password);
 
     if (!mounted) return;

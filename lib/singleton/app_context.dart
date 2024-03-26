@@ -16,8 +16,8 @@ class AppContext {
   }
 
   Future<void> initDotEnv() async {
-    dotenv.env['userPoolId'];
-    dotenv.env['clientId'];
+    _userPoolId = dotenv.env['userPoolId'];
+    _clientId = dotenv.env['clientId'];
   }
 
   AppContext._internal();
